@@ -2,10 +2,25 @@ import { connectToDB } from "@/lib/mongoose";
 import { Post } from "@/models/Post";
 import { NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(req: Request) {
   await connectToDB();
-  const posts = await Post.find().sort({ createdAt: -1 });
-  return NextResponse.json(posts);
+  const { searchParams } = new URL(req.url);
+  const page = parseInt(searchParams.get("page") || "1");
+  const limit = 4;
+  const skip = (page - 1) * limit;
+
+  const total = await Post.countDocuments();
+  const posts = await Post.find()
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit);
+
+  return NextResponse.json({
+    posts,
+    total,
+    page,
+    totalPages: Math.ceil(total / limit),
+  });
 }
 
 export async function POST(req: Request) {
