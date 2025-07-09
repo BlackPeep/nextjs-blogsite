@@ -39,6 +39,6 @@ export async function DELETE(
   await connectToDB();
   const deleted = await Post.findByIdAndDelete(params.id);
   if (!deleted)
-    return NextResponse.json({ error: "Not founf" }, { status: 404 });
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
   return NextResponse.json({ message: "deleted" });
 }

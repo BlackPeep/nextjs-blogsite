@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export default function DeleteButton({ id }: { id: string }) {
   const router = useRouter();
@@ -10,9 +11,10 @@ export default function DeleteButton({ id }: { id: string }) {
       method: "DELETE",
     });
     if (res.ok) {
+      toast.success("Deleted post succesfully");
       router.push("/");
     } else {
-      alert("failed to delete post");
+      toast.error("Failed to delete post");
     }
   };
 
