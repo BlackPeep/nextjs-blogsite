@@ -25,8 +25,7 @@ export default function EditPostPage({
       setContent(post.content);
     };
     fetchPost();
-    console.log(title);
-    console.log(content);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id]);
 
   const handleUpdate = async (e: React.FormEvent) => {

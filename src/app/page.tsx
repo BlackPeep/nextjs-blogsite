@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Post } from "@/types/Post";
 
 async function getPosts(page: number = 1) {
   const res = await fetch(
@@ -34,7 +35,7 @@ export default async function Home({
 
       {/* Blog posts lists */}
       <ul className="space-y-6">
-        {posts.map((post: any) => (
+        {posts.map((post: Post) => (
           <li key={post._id} className="border rounded p-3 hover:shadow">
             <h2 className="text-xl font-semibold line-clamp-1">{post.title}</h2>
             <p className="text-gray-600 mt-2 line-clamp-2">{post.content}</p>
