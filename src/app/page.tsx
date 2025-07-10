@@ -12,9 +12,13 @@ async function getPosts(page: number = 1) {
   return res.json();
 }
 
-export default async function Home({ searchParams }: any) {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: { page?: string };
+}) {
   const page = parseInt(searchParams?.page || "1");
-  const { posts, totalPages } = await getPosts(page);
+  const { posts = [], totalPages = 1 } = await getPosts(page);
 
   return (
     <main className="max-w-3xl mx-auto p-4">
