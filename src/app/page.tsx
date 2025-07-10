@@ -12,12 +12,12 @@ async function getPosts(page: number = 1) {
   return res.json();
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams: { page?: string };
-}) {
-  const page = parseInt(searchParams.page || "1");
+type PageProps = {
+  searchParams?: { page?: string };
+};
+
+export default async function Home({ searchParams }: PageProps) {
+  const page = parseInt(searchParams?.page || "1");
   const { posts, totalPages } = await getPosts(page);
 
   return (
