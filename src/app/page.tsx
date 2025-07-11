@@ -9,6 +9,7 @@ async function getPosts(page: number = 1) {
   return res.json();
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default async function Home({ searchParams }: any) {
   const page = parseInt(searchParams?.page ?? "1");
 
