@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { Post } from "@/types/Post";
 
+type PageProps = {
+  searchParams?: {
+    page?: string;
+  };
+};
+
 async function getPosts(page: number = 1) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/posts?page=${page}`,
@@ -12,14 +18,8 @@ async function getPosts(page: number = 1) {
   return res.json();
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams?: { page?: string };
-}) {
-  const page = parseInt(
-    typeof searchParams?.page === "string" ? searchParams.page : "1"
-  );
+export default async function Home({ searchParams }: PageProps) {
+  const page = Number(searchParams?.page) || 1;
 
   const { posts = [], totalPages = 1 } = await getPosts(page);
 
