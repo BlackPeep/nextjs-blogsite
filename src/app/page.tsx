@@ -9,11 +9,7 @@ async function getPosts(page: number = 1) {
   return res.json();
 }
 
-export default async function Home({
-  searchParams,
-}: {
-  searchParams?: Record<string, string>;
-}) {
+export default async function Home({ searchParams }: any) {
   const page = parseInt(searchParams?.page ?? "1");
 
   const { posts = [], totalPages = 1 } = await getPosts(page);
