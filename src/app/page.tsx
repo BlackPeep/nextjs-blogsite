@@ -1,10 +1,8 @@
 import Link from "next/link";
 import { Post } from "@/types/Post";
 
-type PageProps = {
-  searchParams?: {
-    page?: string;
-  };
+type Props = {
+  searchParams?: Record<string, string | string[] | undefined>;
 };
 
 async function getPosts(page: number = 1) {
@@ -18,8 +16,12 @@ async function getPosts(page: number = 1) {
   return res.json();
 }
 
-export default async function Home({ searchParams }: PageProps) {
-  const page = Number(searchParams?.page) || 1;
+export default async function Home({ searchParams }: Props) {
+  const pageParam = Array.isArray(searchParams?.page)
+    ? searchParams.page[0]
+    : searchParams?.page;
+
+  const page = parseInt(pageParam || "1");
 
   const { posts = [], totalPages = 1 } = await getPosts(page);
 
