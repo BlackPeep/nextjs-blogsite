@@ -1,27 +1,20 @@
 import Link from "next/link";
 import { Post } from "@/types/Post";
 
-type Props = {
-  searchParams?: Record<string, string | string[] | undefined>;
-};
-
 async function getPosts(page: number = 1) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_API_URL}/api/posts?page=${page}`,
-    {
-      cache: "no-store",
-    }
+    { cache: "no-store" }
   );
-
   return res.json();
 }
 
-export default async function Home({ searchParams }: Props) {
-  const pageParam = Array.isArray(searchParams?.page)
-    ? searchParams.page[0]
-    : searchParams?.page;
-
-  const page = parseInt(pageParam || "1");
+export default async function Home({
+  searchParams,
+}: {
+  searchParams?: Record<string, string>;
+}) {
+  const page = parseInt(searchParams?.page ?? "1");
 
   const { posts = [], totalPages = 1 } = await getPosts(page);
 
@@ -30,15 +23,14 @@ export default async function Home({ searchParams }: Props) {
       {/* Header */}
       <header className="flex items-center justify-between py-6 border-b mb-6">
         <h1 className="text-3xl font-bold">Next Js Blog</h1>
-
-        <Link href={"/new"}>
-          <button className="bg-foreground text-background  px-4 py-2 rounded hover:opacity-90 ">
+        <Link href="/new">
+          <button className="bg-foreground text-background px-4 py-2 rounded hover:opacity-90">
             New Post
           </button>
         </Link>
       </header>
 
-      {/* Blog posts lists */}
+      {/* Blog posts list */}
       <ul className="space-y-6">
         {posts.map((post: Post) => (
           <li key={post._id} className="border rounded p-3 hover:shadow">
@@ -50,7 +42,7 @@ export default async function Home({ searchParams }: Props) {
             >
               Read More
             </Link>
-            <span className="text-sm text-gray-600 mt-2 ">
+            <span className="text-sm text-gray-600 mt-2">
               {new Date(post.createdAt).toLocaleDateString(undefined, {
                 year: "numeric",
                 month: "short",
@@ -73,7 +65,7 @@ export default async function Home({ searchParams }: Props) {
         >
           Previous
         </Link>
-        <span className="text-sm ">
+        <span className="text-sm">
           Page {page} of {totalPages}
         </span>
         <Link
